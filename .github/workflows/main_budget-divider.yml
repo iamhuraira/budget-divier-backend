@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'budget-divider'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4F152655D41247B5B5FAB130FCE5FC32 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4E2E966567B54F84B927ABAF3A0040E2 }}
           package: .

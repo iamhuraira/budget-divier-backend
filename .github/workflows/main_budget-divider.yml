@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy Node.js app to Azure Web App - didik-medium
+name: Build and deploy Node.js app to Azure Web App 
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
 
       - name: yarn install, build, and test
         run: |
-          yarn install -g @nestjs/cli
+          yarn install globle @nestjs/cli
           yarn install
           yarn run build
 

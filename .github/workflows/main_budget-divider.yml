@@ -31,6 +31,12 @@ jobs:
           npm install -g @nestjs/cli
           yarn install
           yarn run build
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_6AB0D2228FDF4B4F97D05C022F0287F3 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D3E29350BDF8444AAC70EC469838A668 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_B503FFA0F846474BA0C1E2422CCFA0C0 }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2

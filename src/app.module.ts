@@ -5,12 +5,16 @@ import { UserModule } from './user/user.module'
 import { AuthModule } from './auth/auth.module'
 import { LoggerMiddleware } from './common'
 
+const ENV = process.env.NODE_ENV
+console.log('ENV: ', ENV)
+
 @Module({
   imports: [
     UserModule,
     AuthModule,
     ConfigModule.forRoot({
-      envFilePath: '.env',
+      envFilePath: ENV && `.env.${ENV}`,
+      ignoreEnvFile: !ENV, // Ignore the local file if NODE_ENV is set (indicating production)
       isGlobal: true,
     }),
     MongooseModule.forRoot(process.env.DB_URI),
@@ -20,5 +24,6 @@ import { LoggerMiddleware } from './common'
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {
-    consumer.apply(LoggerMiddleware).forRoutes('*');
-  }}
+    consumer.apply(LoggerMiddleware).forRoutes('*')
+  }
+}

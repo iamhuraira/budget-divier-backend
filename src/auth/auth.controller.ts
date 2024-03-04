@@ -16,7 +16,6 @@ import { RefreshTokenGuard } from '../common/guards/refreshToken.guard'
 import { AccessTokenGuard } from '../common/guards/accessToken.guard'
 import { SigninDto } from './dto/signin.dto'
 
-@ApiBearerAuth()
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
@@ -36,8 +35,6 @@ export class AuthController {
   @ApiQuery({ name: 'email', required: true, description: 'User Email' })
   @ApiQuery({ name: 'password', required: true, description: 'User Password' }) */
   signUp(@Body() createAuthDto: SignupDto): Promise<TokenDto> {
-    // eslint-disable-next-line no-console
-    console.log('createAuthDto', createAuthDto)
     return this.authService.signup(createAuthDto)
   }
 

@@ -11,7 +11,7 @@ import {
 import { Request } from 'express'
 import { AuthService } from './auth.service'
 import { SignupDto } from './dto/signup.dto'
-import { TokenDto } from './dto/token.dto'
+import { TokenDto, TokenDTOWithoutID } from './dto/token.dto'
 import { RefreshTokenGuard } from '../common/guards/refreshToken.guard'
 import { AccessTokenGuard } from '../common/guards/accessToken.guard'
 import { SigninDto } from './dto/signin.dto'
@@ -48,7 +48,7 @@ export class AuthController {
   @ApiSecurity('JWT-auth')
   @UseGuards(RefreshTokenGuard)
   @Get('refresh')
-  refreshTokens(@Req() req: Request): Promise<TokenDto> {
+  refreshTokens(@Req() req: Request): Promise<TokenDTOWithoutID> {
     const { userId, refreshToken } = req.user as any
     return this.authService.refreshTokens(userId, refreshToken)
   }

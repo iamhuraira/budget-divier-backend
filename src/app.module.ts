@@ -5,6 +5,8 @@ import { UserModule } from './user/user.module'
 import { AuthModule } from './auth/auth.module'
 import { LoggerMiddleware } from './common'
 import { ProjectsModule } from './module/projects/projects.module'
+import { AppService } from './app.service'
+import { AppController } from './app.controller'
 
 const ENV = process.env.NODE_ENV
 console.log('ENV: ', ENV)
@@ -20,8 +22,8 @@ console.log('ENV: ', ENV)
     MongooseModule.forRoot(process.env.DB_URI),
     ProjectsModule,
   ],
-  controllers: [],
-  providers: [],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule implements NestModule {
   // eslint-disable-next-line class-methods-use-this

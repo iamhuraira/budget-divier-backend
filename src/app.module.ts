@@ -13,8 +13,7 @@ console.log('ENV: ', ENV)
     UserModule,
     AuthModule,
     ConfigModule.forRoot({
-      envFilePath: ENV && `.env.${ENV}`,
-      ignoreEnvFile: !ENV, // Ignore the local file if NODE_ENV is set (indicating production)
+      envFilePath: ENV ? `.env.${ENV}` : '.env',
       isGlobal: true,
     }),
     MongooseModule.forRoot(process.env.DB_URI),

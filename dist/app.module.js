@@ -27,8 +27,7 @@ exports.AppModule = AppModule = __decorate([
             user_module_1.UserModule,
             auth_module_1.AuthModule,
             config_1.ConfigModule.forRoot({
-                envFilePath: ENV && `.env.${ENV}`,
-                ignoreEnvFile: !ENV,
+                envFilePath: ENV ? `.env.${ENV}` : '.env',
                 isGlobal: true,
             }),
             mongoose_1.MongooseModule.forRoot(process.env.DB_URI),

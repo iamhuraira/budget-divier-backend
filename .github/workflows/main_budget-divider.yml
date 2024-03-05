@@ -24,7 +24,7 @@ jobs:
       - name: yarn install, build
         run: |
           yarn install
-          yarn run build --if-present
+          yarn run build 
       
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp

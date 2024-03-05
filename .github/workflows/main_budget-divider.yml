@@ -23,6 +23,9 @@ jobs:
 
       - name: npm install, build, and test
         run: |
+          rm -rf node_modules
+          rm package-lock.json
+          npm install -g @nestjs/cli
           yarn install
           yarn run build 
 

@@ -35,4 +35,8 @@ lerna-debug.log*
 
 .env.development
 .env.staging
-.env.prod
+.env
+
+docker-compose.yml
+Dockerfile-Stagging
+Dockerfile-Production

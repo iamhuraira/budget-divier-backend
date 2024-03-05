@@ -1,21 +1,20 @@
-import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common'
+import { BadRequestException, ForbiddenException, Inject, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
-import { Model } from 'mongoose'
 import * as argon2 from 'argon2'
 import { JwtService } from '@nestjs/jwt'
 import { ConfigService } from '@nestjs/config'
+import { Model } from 'mongoose'
 import { SignupDto } from './dto/signup.dto'
 import { UsersService } from '../user/user.service'
-import { TokenDto } from './dto/token.dto'
+import { TokenDto, TokenDTOWithoutID } from './dto/token.dto'
 import { User, UserDocument } from '../user/schemas/user.schema'
 import { SigninDto } from './dto/signin.dto'
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(User.name)
-    private userModel: Model<UserDocument>,
-    private jwtService: JwtService,
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    @Inject(JwtService) private jwtService: JwtService,
     private configService: ConfigService,
     private usersService: UsersService,
   ) {}
@@ -34,7 +33,7 @@ export class AuthService {
     })
     const tokens = await this.getTokens(newUser._id, newUser.email)
     await this.updateRefreshToken(newUser._id, tokens.refreshToken)
-    return tokens
+    return { userId: newUser._id, accessToken: tokens.accessToken, refreshToken: tokens.refreshToken }
   }
 
   async updateRefreshToken(userId: string, refreshToken: string) {
@@ -52,7 +51,7 @@ export class AuthService {
     if (!passwordMatches) throw new BadRequestException('Password is incorrect')
     const tokens = await this.getTokens(user._id, user.email)
     await this.updateRefreshToken(user._id, tokens.refreshToken)
-    return tokens
+    return { userId: user._id, accessToken: tokens.accessToken, refreshToken: tokens.refreshToken }
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -64,7 +63,7 @@ export class AuthService {
     return this.usersService.update(userId, { refreshToken: null })
   }
 
-  async refreshTokens(userId: string, refreshToken: string): Promise<TokenDto> {
+  async refreshTokens(userId: string, refreshToken: string): Promise<TokenDTOWithoutID> {
     const user = await this.usersService.findById(userId)
     if (!user || !user.refreshToken) {
       throw new ForbiddenException('Access Denied')
@@ -76,9 +75,9 @@ export class AuthService {
     return tokens
   }
 
-  async getTokens(userId: string, username: string): Promise<TokenDto> {
+  async getTokens(userId: string, username: string): Promise<TokenDTOWithoutID> {
     const [accessToken, refreshToken] = await Promise.all([
-      this.jwtService.signAsync(
+      this.jwtService.sign(
         {
           sub: userId,
           username,
@@ -88,7 +87,7 @@ export class AuthService {
           expiresIn: '30m',
         },
       ),
-      this.jwtService.signAsync(
+      this.jwtService.sign(
         {
           sub: userId,
           username,
